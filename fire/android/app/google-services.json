@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "792910935650",
+    "project_id": "backtrial",
+    "storage_bucket": "backtrial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792910935650:android:e1fe347d52c8e8d08c833b",
+        "android_client_info": {
+          "package_name": "com.example.fire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcrGMWlovoUGOIwREg7dLlr8P3UeCah9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
