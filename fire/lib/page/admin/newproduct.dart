@@ -34,24 +34,9 @@ class _AddNewProductState extends State<AddNewProduct> {
   final Price = TextEditingController();
   final Description = TextEditingController();
   final Amount = TextEditingController();
-  XFile? _pickedImage;
   String? imagePath;
-  File? _image;
-
   bool ischecked = false;
 
-  Future<bool> requestStoragePermission() async {
-    var status = await Permission.storage.status;
-    if (status.isGranted) {
-      return true;
-    } else {
-      var requestResult = await Permission.storage.request();
-      if (requestResult == PermissionStatus.granted) {
-        return true;
-      }
-      return false;
-    }
-  }
 
   Future<void> pickImage() async {  
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -60,7 +45,6 @@ class _AddNewProductState extends State<AddNewProduct> {
         final imageTemp = File(image.path);
         setState(() {
           imagePath = imageTemp.path;
-          _image = imageTemp;
         });
   }
 
