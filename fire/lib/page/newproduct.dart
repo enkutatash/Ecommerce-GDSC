@@ -3,7 +3,7 @@
 import 'dart:convert'; // Import for base64 encoding
 import 'dart:io';
 
-import 'package:fire/firestore.dart';
+import 'package:fire/firebase/firestore.dart';
 import 'package:fire/page/display.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

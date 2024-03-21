@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fire/firestore.dart';
+import 'package:fire/firebase/firestore.dart';
 import 'package:flutter/material.dart';
 
 class Display extends StatefulWidget {

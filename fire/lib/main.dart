@@ -1,7 +1,8 @@
 import 'package:fire/page/front.dart';
+import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fire/firebase_options.dart';
+import 'package:fire/firebase/firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: WelcomePage(),
+        body: General_Screen(),
       ),
     );
   }
