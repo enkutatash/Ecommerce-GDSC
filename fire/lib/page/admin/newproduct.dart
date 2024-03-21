@@ -36,7 +36,7 @@ class _AddNewProductState extends State<AddNewProduct> {
   final Amount = TextEditingController();
   XFile? _pickedImage;
   String? imagePath;
-  
+  File? _image;
 
   bool ischecked = false;
 
@@ -53,26 +53,15 @@ class _AddNewProductState extends State<AddNewProduct> {
     }
   }
 
-  Future<void> pickImage() async {
-    final imagePicker = ImagePicker();
-
-    if (await requestStoragePermission()) {
-      final XFile? pickedImageFile = await imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-
-      if (pickedImageFile != null) {
+  Future<void> pickImage() async {  
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+        // For mobile platforms, set the image directly
+        final imageTemp = File(image.path);
         setState(() {
-          imagePath = pickedImageFile.path;
-          _pickedImage = pickedImageFile;
+          imagePath = imageTemp.path;
+          _image = imageTemp;
         });
-      } else {
-        print('User canceled or failed to pick image');
-      }
-    } else {
-      // Handle permission denial
-      print('Storage permission denied');
-    }
   }
 
   @override
@@ -137,10 +126,14 @@ class _AddNewProductState extends State<AddNewProduct> {
                         ), // Add your button text here
                       ),
                     ),
-                      _pickedImage != null
-              ? Image.file(File(_pickedImage!.path),width: width * 0.4,
-                  height: height * 0.1,)
-              : const Text("  No image selected")
+                    imagePath != null
+                        ? Image.file(
+                            File(imagePath!), // Assuming _imagePath holds the local file path
+                            width: width * 0.4,
+                            height: height * 0.1,
+                          )
+                        : const Text("No image selected"),
+
                   ],
                 ),
               ),
