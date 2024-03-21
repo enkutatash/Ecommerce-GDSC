@@ -5,12 +5,11 @@ import 'dart:io';
 
 import 'package:fire/firebase/firestore.dart';
 import 'package:fire/page/display.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:random_string/random_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddNewProduct extends StatefulWidget {
   AddNewProduct({super.key});
@@ -35,9 +34,46 @@ class _AddNewProductState extends State<AddNewProduct> {
   final Price = TextEditingController();
   final Description = TextEditingController();
   final Amount = TextEditingController();
+  XFile? _pickedImage;
+  String? imagePath;
+  
 
   bool ischecked = false;
-  void _imagePicker() {}
+
+  Future<bool> requestStoragePermission() async {
+    var status = await Permission.storage.status;
+    if (status.isGranted) {
+      return true;
+    } else {
+      var requestResult = await Permission.storage.request();
+      if (requestResult == PermissionStatus.granted) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  Future<void> pickImage() async {
+    final imagePicker = ImagePicker();
+
+    if (await requestStoragePermission()) {
+      final XFile? pickedImageFile = await imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+      if (pickedImageFile != null) {
+        setState(() {
+          imagePath = pickedImageFile.path;
+          _pickedImage = pickedImageFile;
+        });
+      } else {
+        print('User canceled or failed to pick image');
+      }
+    } else {
+      // Handle permission denial
+      print('Storage permission denied');
+    }
+  }
 
   @override
   void dispose() {
@@ -74,7 +110,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                       height: height * 0.1,
                       width: width * 0.5,
                       child: ElevatedButton(
-                        onPressed: _imagePicker,
+                        onPressed: pickImage,
                         style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -94,13 +130,17 @@ class _AddNewProductState extends State<AddNewProduct> {
                               color: Color(0XFF6055D8),
                             ),
                             Text(
-                              "Upload product picture",
+                              "Upload picture",
                               style: TextStyle(color: Color(0XFF6055D8)),
                             ),
                           ],
                         ), // Add your button text here
                       ),
                     ),
+                      _pickedImage != null
+              ? Image.file(File(_pickedImage!.path),width: width * 0.4,
+                  height: height * 0.1,)
+              : const Text("  No image selected")
                   ],
                 ),
               ),
@@ -180,7 +220,9 @@ class _AddNewProductState extends State<AddNewProduct> {
                             double.parse(Price.text),
                             int.parse(Amount.text),
                             Description.text,
-                            id);
+                            imagePath!,
+                            id,
+                            _selectedSize!);
                         Fluttertoast.showToast(
                             msg: "New Product is added",
                             toastLength: Toast.LENGTH_SHORT,

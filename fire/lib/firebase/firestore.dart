@@ -6,14 +6,16 @@ class Firestore {
       FirebaseFirestore.instance.collection('product');
 
   //create
-  Future addproduct(
-      String name, double price, int amount, String description, String id) {
+  Future addproduct(String name, double price, int amount, String description,
+      String imageUrl, String id,String _selectedSize) {
     return dbref.add({
       'Name': name,
       'Price': price,
       'Amount': amount,
       'Desciption': description,
-      'Id': id
+      'Id': id,
+      'Image':imageUrl,
+      'Size':_selectedSize
     });
   }
 

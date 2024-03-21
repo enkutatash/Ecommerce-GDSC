@@ -1,7 +1,7 @@
 // import 'dart:ffi';
 
 import 'package:fire/page/front.dart';
-import 'package:fire/page/newproduct.dart';
+import 'package:fire/page/admin/newproduct.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fire/firebase/firebase_service.dart';
