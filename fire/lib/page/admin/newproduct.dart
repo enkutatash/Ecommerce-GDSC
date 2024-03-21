@@ -36,6 +36,7 @@ class _AddNewProductState extends State<AddNewProduct> {
   final Amount = TextEditingController();
   XFile? _pickedImage;
   String? imagePath;
+  
   File? _image;
 
   bool ischecked = false;
@@ -208,14 +209,14 @@ class _AddNewProductState extends State<AddNewProduct> {
                     child: ElevatedButton(
                       onPressed: () {
                         String id = randomAlphaNumeric(10);
-                        firestore.addproduct(
-                            Name.text,
-                            double.parse(Price.text),
-                            int.parse(Amount.text),
-                            Description.text,
-                            imagePath!,
-                            id,
-                            _selectedSize!);
+                        firestore.addProduct(
+  Name.text,
+  double.tryParse(Price.text) ?? 0.0, // Convert to double or use 0.0 if conversion fails
+  int.tryParse(Amount.text) ?? 0, // Convert to int or use 0 if conversion fails
+  Description.text,
+  _selectedSize!,
+  _image != null ? File(_image!.path) : null, // Pass File object or null if _image is null
+);
                         Fluttertoast.showToast(
                             msg: "New Product is added",
                             toastLength: Toast.LENGTH_SHORT,

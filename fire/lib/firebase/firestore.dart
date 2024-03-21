@@ -7,15 +7,14 @@ class Firestore {
 
   //create
   Future addproduct(String name, double price, int amount, String description,
-      String imageUrl, String id,String _selectedSize) {
+      String imageUrl, String id) {
     return dbref.add({
       'Name': name,
       'Price': price,
       'Amount': amount,
       'Desciption': description,
       'Id': id,
-      'Image':imageUrl,
-      'Size':_selectedSize
+      
     });
   }
 
