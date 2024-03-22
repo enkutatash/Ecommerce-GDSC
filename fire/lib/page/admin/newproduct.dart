@@ -194,7 +194,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                     child: ElevatedButton(
                       onPressed: () {
                         String id = randomAlphaNumeric(10);
-                        firestore.addProduct(
+                        firestore.addproduct(
   Name.text,
   double.tryParse(Price.text) ?? 0.0, // Convert to double or use 0.0 if conversion fails
   int.tryParse(Amount.text) ?? 0, // Convert to int or use 0 if conversion fails

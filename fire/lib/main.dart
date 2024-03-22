@@ -1,7 +1,6 @@
 import 'package:fire/page/admin/newproduct.dart';
 import 'package:fire/page/front.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
-import 'package:fire/page/user/product.dart/productlist.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fire/firebase/firebase_options.dart';

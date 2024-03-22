@@ -15,7 +15,7 @@ class _DisplayState extends State<Display> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
-        stream: firestore.getProduct(),
+        stream: firestore.getproduct(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List productlist = snapshot.data!.docs;
@@ -39,7 +39,7 @@ class _DisplayState extends State<Display> {
                   subtitle: Text('$price'),
                   trailing: IconButton(
                       onPressed: () {
-                        firestore.deleteProduct(docId);
+                        firestore.deleteproduct(docId);
                       },
                       icon: Icon(Icons.delete)),
                 );
