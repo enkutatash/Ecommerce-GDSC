@@ -1,4 +1,5 @@
 import 'package:fire/page/user/Home/General_Screen.dart';
+import 'package:fire/page/user/Search/search.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fire/firebase/firebase_options.dart';

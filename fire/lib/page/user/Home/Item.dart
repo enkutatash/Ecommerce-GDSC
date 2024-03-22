@@ -1,3 +1,4 @@
+import 'package:fire/page/product/productdetail.dart';
 import 'package:flutter/material.dart';
 
 class Item extends StatefulWidget {
@@ -15,7 +16,19 @@ class _ItemState extends State<Item> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Details(
+                    imageAsset: widget.imageURL,
+                    productName: widget.itemName,
+                    price: widget.cost,
+                    amount: widget.Amount,
+                    size: widget.size,
+                    id: widget.id,
+                    description: widget.Description)));
+      },
       child: Container(
           height: height * 0.2,
           width: width * 0.32,
