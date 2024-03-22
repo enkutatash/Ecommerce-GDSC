@@ -1,10 +1,7 @@
 // import 'dart:ffi';
 
-import 'dart:convert'; // Import for base64 encoding
 import 'dart:io';
-
 import 'package:fire/firebase/firestore.dart';
-import 'package:fire/page/display.dart';
 import 'package:fire/page/product/product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -263,11 +260,7 @@ class _AddNewProductState extends State<AddNewProduct> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void _addProduct() async {
-    String name = Name.text;
-    double price = Price.text as double;
-    String description = Description.text;
-  }
+
 }
 
 Widget textfield(
