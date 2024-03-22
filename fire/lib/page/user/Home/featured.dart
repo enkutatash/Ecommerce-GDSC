@@ -1,3 +1,4 @@
+import 'package:fire/page/product/product.dart';
 import 'package:flutter/material.dart';
 import 'package:fire/page/user/Home/Item.dart';
 import 'package:fire/page/user/Home/item_on_front_page.dart';
@@ -11,16 +12,22 @@ class FeaturedPart extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Featured",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              Text(
-                "see all",
-                style: TextStyle(fontSize: 16, color: Color(0XFF6055D8)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProductList()));
+                },
+                child: const Text(
+                  "see all",
+                  style: TextStyle(fontSize: 16, color: Color(0XFF6055D8)),
+                ),
               )
             ],
           ),
@@ -33,7 +40,7 @@ class FeaturedPart extends StatelessWidget {
       List<dynamic> value = entry.value;
       return Row(
         children: [
-          Item(value[0], key, value[1]),
+          Item(value[0], key, value[1],value[2],value[3],value[4],value[5]),
          const SizedBox(width: 16.0), // Adjust the width as needed
         ],
       );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Item extends StatefulWidget {
-  const Item(this.imageURL, this.itemName, this.cost, {super.key});
-  final String imageURL, itemName;
+  const Item(this.imageURL, this.itemName, this.cost, this.Amount,this.Description,this.id,this.size,{super.key});
+  final String imageURL, itemName,Description,id,size;
   final double cost;
-
+  final int Amount;
   @override
   State<Item> createState() => _ItemState();
 }

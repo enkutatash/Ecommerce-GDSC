@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:fire/firebase/firestore.dart';
 import 'package:fire/page/display.dart';
+import 'package:fire/page/product/product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
@@ -230,7 +231,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Display()));
+                            MaterialPageRoute(builder: (context) => ProductList()));
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFF6055D8)),
