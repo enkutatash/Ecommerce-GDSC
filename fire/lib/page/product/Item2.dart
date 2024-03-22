@@ -1,9 +1,12 @@
+import 'package:fire/page/product/productdetail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Item2 extends StatefulWidget {
-  const Item2(this.imageURL, this.itemName, this.cost, this.Amount,this.Description,this.id,this.size,{super.key});
-  final String imageURL, itemName,Description,id,size;
+  const Item2(this.imageURL, this.itemName, this.cost, this.Amount,
+      this.Description, this.id, this.size,
+      {super.key});
+  final String imageURL, itemName, Description, id, size;
   final double cost;
   final int Amount;
   @override
@@ -16,7 +19,19 @@ class _Item2State extends State<Item2> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Details(
+                    imageAsset: widget.imageURL,
+                    productName: widget.itemName,
+                    price: widget.cost,
+                    amount: widget.Amount,
+                    size: widget.size,
+                    id: widget.id,
+                    description: widget.Description)));
+      },
       child: Container(
           height: height * 0.3,
           width: width * 0.4,
@@ -45,9 +60,9 @@ class _Item2State extends State<Item2> {
                       top: 7,
                       right: 7,
                       child: GestureDetector(
-                        onTap: (){},
+                        onTap: () {},
                         child: const Icon(
-                          size:30,
+                          size: 30,
                           Icons.favorite_border_sharp,
                           color: Colors.white,
                         ),
@@ -77,18 +92,17 @@ class _Item2State extends State<Item2> {
                     ),
                   ),
                   GestureDetector(
-                        onTap: (){},
-                        child: const Icon(
-                          size:30,
-                          Icons.add_circle,
-                          color: Color(0XFF6055D8),
-                        ),)
+                    onTap: () {},
+                    child: const Icon(
+                      size: 30,
+                      Icons.add_circle,
+                      color: Color(0XFF6055D8),
+                    ),
+                  )
                 ],
               ),
-              
             ],
           )),
     );
   }
 }
-

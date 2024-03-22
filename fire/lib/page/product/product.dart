@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire/firebase/firestore.dart';
 import 'package:fire/page/admin/newproduct.dart';
 import 'package:fire/page/product/Item2.dart';
+import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {
@@ -21,7 +22,16 @@ class _ProductListState extends State<ProductList> {
     return Scaffold(
       appBar: AppBar(
         title:const Text("Products"),centerTitle: true,
-        leading:const Icon(Icons.arrow_back),
+        leading:  InkWell(
+                          onTap: () {
+                            Navigator.push(context,MaterialPageRoute(builder: (context)=>General_Screen()));
+                          },
+                          child: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestore.getproduct(),

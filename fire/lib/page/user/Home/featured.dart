@@ -1,15 +1,24 @@
-import 'package:fire/page/product/product.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fire/firebase/firestore.dart';
 import 'package:fire/page/user/Home/Item.dart';
-import 'package:fire/page/user/Home/item_on_front_page.dart';
+import 'package:fire/page/product/product.dart';
 
-class FeaturedPart extends StatelessWidget {
-  const FeaturedPart({super.key});
+class FeaturedPart extends StatefulWidget {
+  const FeaturedPart({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) { 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+  _FeaturedPartState createState() => _FeaturedPartState();
+}
+
+class _FeaturedPartState extends State<FeaturedPart> {
+  final Firestore firestore = Firestore();
+
+  @override
+  Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    return Expanded(
       child: Column(
         children: [
           Row(
@@ -24,31 +33,54 @@ class FeaturedPart extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ProductList()));
                 },
-                child: const Text(
+                child: Text(
                   "see all",
                   style: TextStyle(fontSize: 16, color: Color(0XFF6055D8)),
                 ),
               )
             ],
           ),
-         
-      SingleChildScrollView(
-  scrollDirection: Axis.horizontal,
-  child: Row(
-    children: featured.entries.map((MapEntry<String, List<dynamic>> entry) {
-      String key = entry.key;
-      List<dynamic> value = entry.value;
-      return Row(
-        children: [
-          Item(value[0], key, value[1],value[2],value[3],value[4],value[5]),
-         const SizedBox(width: 16.0), // Adjust the width as needed
-        ],
-      );
-    }).toList(),
-  ),
-)
-
-                
+          SizedBox(
+            height: height*0.25,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: firestore.getproduct(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List productlist = snapshot.data!.docs;
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.all(width * 0.05),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      // Get each product
+                      DocumentSnapshot document = productlist[index];
+                      String docId = document.id;
+                      // Get data from each document
+                      Map<String, dynamic> data =
+                          document.data() as Map<String, dynamic>;
+                      String name = data['Name'];
+                      double price = data['Price'];
+                      int amount = data['Amount'];
+                      String description = data['Desciption'];
+                      String imageURL = data['ImageUrl'];
+                      String id = data['Id'];
+                      String size = data['Size'];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Item(
+                          imageURL, name, price, amount, description, id, size
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );

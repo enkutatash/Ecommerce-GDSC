@@ -1,3 +1,4 @@
+import 'package:fire/page/product/product.dart';
 import 'package:fire/page/user/Home/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class _General_ScreenState extends State<General_Screen> {
 
   List<Widget> AllScreens = [
     HomeScreen(),
+    ProductList(),
   ];
 
   void _currentScreen(int index) {
