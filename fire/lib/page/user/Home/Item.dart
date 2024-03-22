@@ -34,7 +34,7 @@ class _ItemState extends State<Item> {
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                     ),
-                    child: Image.asset(
+                    child: Image.network(
                         height: height * 0.13,
                         width: width * 0.32,
                         fit: BoxFit.cover,
