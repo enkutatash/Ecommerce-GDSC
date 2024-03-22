@@ -47,6 +47,7 @@ class _AddNewProductState extends State<AddNewProduct> {
     final imageTemp = File(image.path);
     setState(() {
       imagePath = imageTemp.path;
+      _image = imageTemp;
     });
     final Reference storageReference = FirebaseStorage.instance
         .ref()
@@ -59,13 +60,9 @@ class _AddNewProductState extends State<AddNewProduct> {
 
       // Retrieve the download URL of the uploaded image
       downloadUrl = await storageReference.getDownloadURL();
-
-      // Optionally, you can store the download URL in Firebase Firestore or return it for further processing
-      
     } catch (e) {
       // Handle any errors that occur during the upload process
       print('Error uploading image: $e');
-      
     }
   }
 
@@ -221,8 +218,8 @@ class _AddNewProductState extends State<AddNewProduct> {
                               0, // Convert to int or use 0 if conversion fails
                           Description.text,
                           _selectedSize!,
+                          downloadUrl!, // Pass File object or null if _image is null
                           id,
-                          downloadUrl! // Pass File object or null if _image is null
                         );
                         Fluttertoast.showToast(
                             msg: "New Product is added",
