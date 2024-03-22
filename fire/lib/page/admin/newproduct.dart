@@ -5,11 +5,11 @@ import 'dart:io';
 
 import 'package:fire/firebase/firestore.dart';
 import 'package:fire/page/display.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AddNewProduct extends StatefulWidget {
   AddNewProduct({super.key});
@@ -19,6 +19,7 @@ class AddNewProduct extends StatefulWidget {
 }
 
 class _AddNewProductState extends State<AddNewProduct> {
+  String? downloadUrl;
   final Firestore firestore = Firestore();
   String? _selectedSize;
   List<String> size = [
@@ -39,15 +40,33 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   bool ischecked = false;
 
+  Future<void> pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+    // For mobile platforms, set the image directly
+    final imageTemp = File(image.path);
+    setState(() {
+      imagePath = imageTemp.path;
+    });
+    final Reference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('images')
+        .child('${DateTime.now()}.jpg');
 
-  Future<void> pickImage() async {  
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-        // For mobile platforms, set the image directly
-        final imageTemp = File(image.path);
-        setState(() {
-          imagePath = imageTemp.path;
-        });
+    try {
+      // Upload the image to Firebase Storage
+      await storageReference.putFile(_image!);
+
+      // Retrieve the download URL of the uploaded image
+      downloadUrl = await storageReference.getDownloadURL();
+
+      // Optionally, you can store the download URL in Firebase Firestore or return it for further processing
+      
+    } catch (e) {
+      // Handle any errors that occur during the upload process
+      print('Error uploading image: $e');
+      
+    }
   }
 
   @override
@@ -114,12 +133,12 @@ class _AddNewProductState extends State<AddNewProduct> {
                     ),
                     imagePath != null
                         ? Image.file(
-                            File(imagePath!), // Assuming _imagePath holds the local file path
+                            File(
+                                imagePath!), // Assuming _imagePath holds the local file path
                             width: width * 0.4,
                             height: height * 0.1,
                           )
                         : const Text("No image selected"),
-
                   ],
                 ),
               ),
@@ -195,13 +214,16 @@ class _AddNewProductState extends State<AddNewProduct> {
                       onPressed: () {
                         String id = randomAlphaNumeric(10);
                         firestore.addproduct(
-  Name.text,
-  double.tryParse(Price.text) ?? 0.0, // Convert to double or use 0.0 if conversion fails
-  int.tryParse(Amount.text) ?? 0, // Convert to int or use 0 if conversion fails
-  Description.text,
-  _selectedSize!,
-  _image != null ? File(_image!.path) : null, // Pass File object or null if _image is null
-);
+                          Name.text,
+                          double.tryParse(Price.text) ??
+                              0.0, // Convert to double or use 0.0 if conversion fails
+                          int.tryParse(Amount.text) ??
+                              0, // Convert to int or use 0 if conversion fails
+                          Description.text,
+                          _selectedSize!,
+                          id,
+                          downloadUrl! // Pass File object or null if _image is null
+                        );
                         Fluttertoast.showToast(
                             msg: "New Product is added",
                             toastLength: Toast.LENGTH_SHORT,
