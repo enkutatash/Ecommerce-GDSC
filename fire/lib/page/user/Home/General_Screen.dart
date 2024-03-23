@@ -1,3 +1,4 @@
+import 'package:fire/page/CartPages/cart.dart';
 import 'package:fire/page/product/product.dart';
 import 'package:fire/page/user/Home/HomeScreen.dart';
 import 'package:fire/page/user/Search/search.dart';
@@ -16,7 +17,7 @@ class _General_ScreenState extends State<General_Screen> {
   List<Widget> AllScreens = [
     HomeScreen(),
     Search_Screen(),
-    
+    Cart(),
     ProductList(),
   ];
 

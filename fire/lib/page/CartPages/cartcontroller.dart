@@ -39,5 +39,11 @@ class CartController extends GetxController {
   }
 
   get delivery => product.length*0.01;
-  get total => total + delivery;
+  get total {
+    double subtotal = 0.0;
+    product.forEach((item, quantity) {
+      subtotal += item.cost * quantity;
+    });
+    return subtotal + delivery;
+  }
 }
