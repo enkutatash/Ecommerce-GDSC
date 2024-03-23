@@ -41,7 +41,8 @@ class Cart extends StatelessWidget {
                     ],
                   ),
                 ),
-        ));
+        )
+        );
   }
 }
 
