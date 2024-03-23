@@ -27,45 +27,41 @@ class Cart extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(5),
         child: Column(
-          children: [
-            Expanded(
-              child: Obx(
-                () {
-                  if (_cartController.product.isEmpty) {
-                    return const Center(
-                      child: Text("Empty cart"),
+  children: [
+    Expanded( // Wrap the ListView.builder with Expanded to avoid overflow
+      child: Obx(() {
+        if (_cartController.product.isEmpty) {
+          return const Center(
+            child: Text("Empty cart"),
+          );
+        } else {
+          return ListView.builder(
+            itemCount: _cartController.product.length,
+            itemBuilder: (context, index) {
+              final keys = _cartController.product.keys.toList();
+              final values = _cartController.product.values.toList();
+              return CartItem(
+                      _cartController,
+                      _cartController.product.isNotEmpty
+                          ? _cartController.product.keys.toList()[index]
+                          : null, // Handle empty map case
+                      _cartController.product.isNotEmpty
+                          ? _cartController.product.values.toList()[index]
+                          : null, // Handle empty map case
+                      index,
                     );
-                  } else {
-                    return SizedBox(
-                      child: ListView.builder(
-                        itemCount: _cartController.product.length,
-                        itemBuilder: (context, index) {
-                          return CartItem(
-                                _cartController,
-                                _cartController.product.isNotEmpty
-                                    ? _cartController.product.keys.toList()[index]
-                                    : null, // Handle empty map case
-                                _cartController.product.isNotEmpty
-                                    ? _cartController.product.values.toList()[index]
-                                    : null, // Handle empty map case
-                                index,
-                              );
-                        },
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-            if (_cartController.product.isNotEmpty) // Check if cart is not empty
-              SizedBox(
-                height: height * 0.04,
-              ),
-            if (_cartController.product.isNotEmpty) // Check if cart is not empty
-              const CartTotal(),
-          ],
-        ),
-      ),
+            },
+          );
+        }
+      }),
+    ),
+    if (_cartController.product.isNotEmpty) // Check if cart is not empty
+      const SizedBox(height: 20), // Add space between ListView and CartTotal
+    if (_cartController.product.isNotEmpty) // Check if cart is not empty
+      const CartTotal(),
+  ],
+)
+      )
     );
   }
 }
@@ -238,7 +234,7 @@ class CartTotal extends StatelessWidget {
     final CartController _cartController = Get.find();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return Obx(() => Container(
+    return Obx(() => _cartController.product.isNotEmpty? Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: Color(0XFFF8F7F7),
@@ -318,6 +314,7 @@ class CartTotal extends StatelessWidget {
               ],
             ),
           ),
-        ));
+        ):Container()
+        );
   }
 }

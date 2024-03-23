@@ -25,16 +25,21 @@ class Cart extends StatelessWidget {
               child: ListView.builder(
                 itemCount: _cartController.product.length,
                 itemBuilder: (context, index) {
-                  return CartItem(
-                    _cartController,
-                    _cartController.product.keys.toList()[index],
-                    _cartController.product.values.toList()[index],
-                    index,
-                  );
+               return CartItem(
+                      _cartController,
+                      _cartController.product.isNotEmpty
+                          ? _cartController.product.keys.toList()[index]
+                          : null, // Handle empty map case
+                      _cartController.product.isNotEmpty
+                          ? _cartController.product.values.toList()[index]
+                          : null, // Handle empty map case
+                      index,
+                    );
+
                 },
               ),
             ),
-            CartTotal()
+            // CartTotal()
           ],
         ),
       ),
