@@ -1,6 +1,8 @@
 import 'package:fire/page/product/productdetail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fire/page/CartPages/cartcontroller.dart';
+import 'package:get/get.dart';
 
 class Item2 extends StatefulWidget {
   const Item2(this.imageURL, this.itemName, this.cost, this.Amount,
@@ -14,6 +16,7 @@ class Item2 extends StatefulWidget {
 }
 
 class _Item2State extends State<Item2> {
+  final CartController _cartController = Get.put(CartController());
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -92,7 +95,9 @@ class _Item2State extends State<Item2> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _cartController.addProduct(Item2(widget.imageURL, widget.itemName,widget.cost, widget.Amount, widget.Description, widget.id, widget.size));
+                    },
                     child: const Icon(
                       size: 30,
                       Icons.add_circle,

@@ -1,6 +1,7 @@
 import 'package:fire/page/user/Home/featured.dart';
 import 'package:fire/page/user/Home/mostPopular.dart';
 import 'package:fire/page/user/Home/updates.dart';
+import 'package:fire/page/user/Search/search.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,8 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const ListTile(
           contentPadding: EdgeInsets.all(10),
           leading: CircleAvatar(
-              backgroundImage:
-                  AssetImage("assets/profile_img.jpg")),
+              backgroundImage: AssetImage("assets/profile_img.jpg")),
           title: Text("Hello!"),
           subtitle: Text(
             "John William",
@@ -35,6 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Icon(Icons.notifications)),
         ),
         SearchBar(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => Search_Screen()));
+          },
           padding: MaterialStateProperty.all<EdgeInsets>(
               const EdgeInsets.symmetric(horizontal: 15)),
           backgroundColor:

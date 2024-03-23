@@ -4,22 +4,22 @@ class Firestore {
   //get collection of notes
   final CollectionReference dbref =
       FirebaseFirestore.instance.collection('product');
-      
 
   //create
-  Future addproduct(String name, double price, int amount, String description,String size,
-      String imageUrl, String id) {
+  Future addproduct(String name, double price, int amount, String description,
+      String size, String imageUrl, String id) {
     return dbref.add({
       'Name': name,
       'Price': price,
       'Amount': amount,
       'Desciption': description,
-      'Size':size,
+      'Size': size,
       'Id': id,
-      'ImageUrl':imageUrl,
-      
+      'ImageUrl': imageUrl,
     });
   }
+
+
 
   //update
   Future<void> updateproduct(String docid, String name, String des,
@@ -45,5 +45,4 @@ class Firestore {
   }
 
   //search
-  
 }
