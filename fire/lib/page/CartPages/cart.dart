@@ -59,10 +59,34 @@ class Cart extends StatelessWidget {
       const SizedBox(height: 20), // Add space between ListView and CartTotal
     if (_cartController.product.isNotEmpty) // Check if cart is not empty
       const CartTotal(),
+    if (_cartController.product.isNotEmpty) 
+    const CheckoutButton()
   ],
 )
       )
     );
+  }
+}
+
+class CheckoutButton extends StatelessWidget {
+  const CheckoutButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final CartController _cartController = Get.find();
+    final width = MediaQuery.of(context).size.width;
+    return Obx(() => _cartController.product.isNotEmpty? SizedBox(
+      width: width*0.6,
+      child: ElevatedButton(
+          onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0XFF6055D8)),
+                child:const Text(
+                  "Check Out ",
+                  style: TextStyle(color: Colors.white),
+                ), // Add your button text here
+              ),
+    ):Container());
   }
 }
 
