@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fire/firebase/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,15 +18,14 @@ class Firebase_auth_service {
       content: Text(message),
       action: SnackBarAction(
         label: 'Close',
-        onPressed: () {
-        },
+        onPressed: () {},
       ),
     );
     ScaffoldMessenger.of(_context).showSnackBar(snackBar);
   }
 
   Future adduser(String userid, String email, String userName, String password,
-       String profilePic) {
+      String profilePic) {
     return dbrefuser.doc(userid).set({
       'Email': email,
       'userName': userName,
@@ -34,41 +34,31 @@ class Firebase_auth_service {
     });
   }
 
-// void _changePassword(String yourPassword) async{
-//     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-//     user.updatePassword(yourPassword).then((_){
-// Firestore.instance.collection("users").document(user.uid).updateData(
-//          {
-//           "password" : _newpasswordController.text,
-//          }).then((_){
-//           print("Successfully changed password");
-//          });
-//     }).catchError((error){
-//       print("Error " + error.toString());
-//     });
-//   }
+  Future<void> updatePassword(String uid, String oldpassword,String newPassword) async {
+    try {
+      // Retrieve user based on UID
+      User? user = FirebaseAuth.instance.currentUser;
+      print("current user");
 
-Future<void> updatePassword(String uid, String newPassword) async {
-  try {
-    // Retrieve user based on UID
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Re-authenticate user
-      AuthCredential credential = EmailAuthProvider.credential(email: user.email!, password: 'current-password');
-      await user.reauthenticateWithCredential(credential);
-      await user.updatePassword(newPassword);
-      print('Password updated successfully');
-    } else {
-      print('User not signed in.');
+      if (user != null) {
+        // Re-authenticate user
+        AuthCredential credential = EmailAuthProvider.credential(
+            email: user.email!, password: oldpassword);
+         user.reauthenticateWithCredential(credential);
+        print("After");
+         user.updatePassword(newPassword);
+        print('Password updated successfully');
+      } else {
+        print('User not signed in.');
+      }
+    } catch (error) {
+      print('Error updating password: $error');
+      throw error; // Rethrow the error to handle it in the calling function
     }
-  } catch (error) {
-    print('Error updating password: $error');
-    throw error; // Rethrow the error to handle it in the calling function
   }
-}
 
-    Future<void> updateprofile(String userid, String email,
-      String userName,String password,String profilePic) {
+  Future<void> updateprofile(String userid, String email, String userName,
+      String password, String profilePic) {
     return dbrefuser.doc(userid).update({
       'Email': email,
       'userName': userName,
@@ -115,21 +105,20 @@ Future<void> updatePassword(String uid, String newPassword) async {
     return null;
   }
 
- Future<Map<String, dynamic>> data(String docid) async {
-  try {
-    DocumentSnapshot snapshot = await dbrefuser.doc(docid).get();
-    if (snapshot.exists) {
-      Map<String, dynamic> userdata = snapshot.data() as Map<String, dynamic>;
-      return userdata;
-    } else {
-      return {}; // Return empty map if the document doesn't exist
+  Future<Map<String, dynamic>> data(String docid) async {
+    try {
+      DocumentSnapshot snapshot = await dbrefuser.doc(docid).get();
+      if (snapshot.exists) {
+        Map<String, dynamic> userdata = snapshot.data() as Map<String, dynamic>;
+        return userdata;
+      } else {
+        return {}; // Return empty map if the document doesn't exist
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+      return {}; // Return empty map if there's an error
     }
-  } catch (e) {
-    print("Error fetching user data: $e");
-    return {}; // Return empty map if there's an error
   }
-}
-
 
   void signout() {
     FirebaseAuth.instance.signOut();
