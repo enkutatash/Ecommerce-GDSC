@@ -171,7 +171,6 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
     if (user != null) {
       print("User is successfully Sign in");
       _fetchUserData(user.uid);
-      _auth.data(user.uid);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => General_Screen(userdata,user.uid)));
       _showSnackBar("User is successfully Sign in");

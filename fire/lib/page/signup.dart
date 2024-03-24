@@ -257,7 +257,8 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
         'Email': email,
       'userName': UserName,
       'password': password,
-      'profilePic': downloadUrl
+      'profilePic': downloadUrl,
+      'id':user.uid
       };
       Navigator.push(
           context,

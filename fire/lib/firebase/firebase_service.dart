@@ -34,6 +34,49 @@ class Firebase_auth_service {
     });
   }
 
+// void _changePassword(String yourPassword) async{
+//     FirebaseUser user = await FirebaseAuth.instance.currentUser();
+//     user.updatePassword(yourPassword).then((_){
+// Firestore.instance.collection("users").document(user.uid).updateData(
+//          {
+//           "password" : _newpasswordController.text,
+//          }).then((_){
+//           print("Successfully changed password");
+//          });
+//     }).catchError((error){
+//       print("Error " + error.toString());
+//     });
+//   }
+
+Future<void> updatePassword(String uid, String newPassword) async {
+  try {
+    // Retrieve user based on UID
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Re-authenticate user
+      AuthCredential credential = EmailAuthProvider.credential(email: user.email!, password: 'current-password');
+      await user.reauthenticateWithCredential(credential);
+      await user.updatePassword(newPassword);
+      print('Password updated successfully');
+    } else {
+      print('User not signed in.');
+    }
+  } catch (error) {
+    print('Error updating password: $error');
+    throw error; // Rethrow the error to handle it in the calling function
+  }
+}
+
+    Future<void> updateprofile(String userid, String email,
+      String userName,String password,String profilePic) {
+    return dbrefuser.doc(userid).update({
+      'Email': email,
+      'userName': userName,
+      'password': password,
+      'profilePic': profilePic,
+    });
+  }
+
   Future<User?> signUpWithEmailAndPassword(
       String email, String userName, String password, String profilePic) async {
     try {
