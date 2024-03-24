@@ -96,13 +96,12 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
               Center(
                 child: Stack(children: [
                   CircleAvatar(
-                      radius: 40.0,
-                      backgroundImage: AssetImage(imagePath)),
+                      radius: 40.0, backgroundImage: AssetImage(imagePath)),
                   Positioned(
                       top: 45,
                       right: -10,
                       child: IconButton(
-                          onPressed:pickImage,
+                          onPressed: pickImage,
                           icon: const Icon(
                             Icons.camera_alt_outlined,
                             size: 30,
@@ -250,12 +249,20 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
     String Email = email.text;
     String Password = password.text;
 
-    User? user =
-        await _auth.signUpWithEmailAndPassword(Email, UserName, Password,downloadUrl!);
+    User? user = await _auth.signUpWithEmailAndPassword(
+        Email, UserName, Password, downloadUrl!);
     if (user != null) {
       print("User is successfully created");
+      Map<String, dynamic> userdata = {
+        'Email': email,
+      'userName': UserName,
+      'password': password,
+      'profilePic': downloadUrl
+      };
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => General_Screen(user.uid)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => General_Screen(userdata, user.uid)));
       _showSnackBar("User is successfully created");
     } else {
       print("Some error happend on create user");

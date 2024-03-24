@@ -31,7 +31,7 @@ class _ProductListState extends State<ProductList> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        General_Screen(widget.userid)));
+                        General_Screen(widget.userdata,widget.userid)));
           },
           child: const Icon(
             Icons.arrow_back,

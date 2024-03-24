@@ -17,6 +17,7 @@ class SignIn_Screen extends StatefulWidget {
 
 class _SignIn_ScreenState extends State<SignIn_Screen> {
   late final Firebase_auth_service _auth;
+  late Map<String, dynamic> userdata;
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final email = TextEditingController();
   final password = TextEditingController();
@@ -153,6 +154,14 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  Future<void> _fetchUserData(String userId) async {
+    try {
+      userdata = await _auth.data(userId);
+    } catch (e) {
+      // Handle error
+    }
+  }
+
   void _signIn() async {
     String Email = email.text;
     String Password = password.text;
@@ -161,9 +170,10 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
 
     if (user != null) {
       print("User is successfully Sign in");
+      _fetchUserData(user.uid);
       _auth.data(user.uid);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => General_Screen(user.uid)));
+          MaterialPageRoute(builder: (context) => General_Screen(userdata,user.uid)));
       _showSnackBar("User is successfully Sign in");
     } else {
       print("Some error happend on login user");

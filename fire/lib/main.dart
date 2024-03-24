@@ -1,3 +1,5 @@
+import 'package:fire/page/admin/adminFront.dart';
+import 'package:fire/page/admin/sidebar.dart';
 import 'package:fire/page/signin.dart';
 import 'package:fire/page/signup.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
@@ -19,10 +21,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SignIn_Screen(),
+        body: AdminFront(),
       ),
     );
   }
