@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'package:fire/firebase/firestore.dart';
-import 'package:fire/page/product/product.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +9,31 @@ import 'package:random_string/random_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddNewProduct extends StatefulWidget {
+class EditProduct extends StatefulWidget {
   Map<String, dynamic> userdata;
-  AddNewProduct(this.userdata,{super.key});
+  String imageAsset;
+  String productName;
+  double price;
+  int amount;
+  String size;
+  String id;
+  String description;
+
+  EditProduct(this.userdata,
+      {required this.imageAsset,
+      required this.productName,
+      required this.price,
+      required this.amount,
+      required this.size,
+      required this.id,
+      required this.description,
+      super.key});
 
   @override
-  State<AddNewProduct> createState() => _AddNewProductState();
+  State<EditProduct> createState() => _EditProductState();
 }
 
-class _AddNewProductState extends State<AddNewProduct> {
+class _EditProductState extends State<EditProduct> {
   String? downloadUrl;
   final Firestore firestore = Firestore();
   String? _selectedSize;
@@ -31,14 +46,36 @@ class _AddNewProductState extends State<AddNewProduct> {
     'XXXL',
   ];
 
-  final Name = TextEditingController();
-  final Price = TextEditingController();
-  final Description = TextEditingController();
-  final Amount = TextEditingController();
+  TextEditingController? Name;
+  TextEditingController? Price;
+  TextEditingController? Description;
+  TextEditingController? Amount;
   String? imagePath;
   File? _image;
 
   bool ischecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Name = TextEditingController(text: widget.productName);
+    Price = TextEditingController(text: widget.price.toString());
+    Amount = TextEditingController(text: widget.amount.toString());
+    Description = TextEditingController(text: widget.description);
+    downloadUrl = widget.imageAsset;
+    imagePath = widget.imageAsset;
+    Name!.addListener(_onChanged);
+    Price!.addListener(_onChanged);
+    Amount!.addListener(_onChanged);
+    Description!.addListener(_onChanged);
+  }
+
+  void _onChanged() {
+    widget.productName = Name!.text;
+    widget.price = double.parse(Price!.text);
+    widget.amount = int.parse(Amount!.text);
+    widget.description = Description!.text;
+  }
 
   Future<void> pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -68,10 +105,10 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   @override
   void dispose() {
-    Amount.dispose();
-    Name.dispose();
-    Price.dispose();
-    Description.dispose();
+    Amount!.dispose();
+    Name!.dispose();
+    Price!.dispose();
+    Description!.dispose();
     super.dispose();
   }
 
@@ -88,7 +125,7 @@ class _AddNewProductState extends State<AddNewProduct> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Add New Product",
+              const Text("Edit Product",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: height * 0.03,
@@ -148,7 +185,7 @@ class _AddNewProductState extends State<AddNewProduct> {
               ),
               textfield(
                 "Nike shoes",
-                Name,
+                Name!,
                 TextInputType.text,
               ),
               SizedBox(
@@ -158,7 +195,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                 "Product Price",
                 style: TextStyle(color: Colors.black),
               ),
-              textfield("\$200", Price, TextInputType.number),
+              textfield("\$200", Price!, TextInputType.number),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -166,7 +203,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                 "Amount",
                 style: TextStyle(color: Colors.black),
               ),
-              textfield("1", Amount, TextInputType.number),
+              textfield("1", Amount!, TextInputType.number),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -174,7 +211,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                 "Product Description",
                 style: TextStyle(color: Colors.black),
               ),
-              textfield("Description", Description, TextInputType.text),
+              textfield("Description", Description!, TextInputType.text),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -209,33 +246,34 @@ class _AddNewProductState extends State<AddNewProduct> {
                     width: width * 0.8,
                     child: ElevatedButton(
                       onPressed: () {
-                        String id = randomAlphaNumeric(10);
-                        firestore.addproduct(
-                          Name.text,
-                          double.tryParse(Price.text) ??
-                              0.0, // Convert to double or use 0.0 if conversion fails
-                          int.tryParse(Amount.text) ??
-                              0, // Convert to int or use 0 if conversion fails
-                          Description.text,
-                          _selectedSize!,
+                        firestore.updateproduct(
+                          widget.productName,
+                          widget.description,
+                          widget.price,
+                          widget.amount,
+                          widget.id,
+                          widget.size,
                           downloadUrl!, // Pass File object or null if _image is null
-                          id,
                         );
                         Fluttertoast.showToast(
-                            msg: "New Product is added",
+                            msg: "Product is updated",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.CENTER,
                             timeInSecForIosWeb: 1,
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
                             fontSize: 16.0);
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => General_Screen(widget.userdata,"s6N7ql9YmxdMRu3oC2WDPWQoxvs2")));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => General_Screen(
+                                    widget.userdata,
+                                    "s6N7ql9YmxdMRu3oC2WDPWQoxvs2")));
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFF6055D8)),
                       child: Text(
-                        "Add Product ",
+                        "Edit Product ",
                         style: TextStyle(color: Colors.white),
                       ), // Add your button text here
                     ),
@@ -261,8 +299,6 @@ class _AddNewProductState extends State<AddNewProduct> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
-
 }
 
 Widget textfield(

@@ -9,7 +9,7 @@ class Firestore {
   //create
   Future addproduct(String name, double price, int amount, String description,
       String size, String imageUrl, String id) {
-    return dbref.add({
+    return dbref.doc(id).set({
       'Name': name,
       'Price': price,
       'Amount': amount,
@@ -23,14 +23,16 @@ class Firestore {
  
 
   //update
-  Future<void> updateproduct(String docid, String name, String des,
-      double price, int Amount, String id) {
-    return dbref.doc(docid).update({
+  Future<void> updateproduct(String name, String des,
+      double price, int Amount, String id,String size,String imageurl) {
+    return dbref.doc(id).update({
       'Name': name,
       'Desciption': des,
       'Amount': Amount,
       'Price': price,
-      'id': id
+      'id': id,
+      'Size':size,
+      'ImageUrl':imageurl
     });
   }
 
@@ -44,8 +46,5 @@ class Firestore {
   Future<void> deleteproduct(String docid) {
     return dbref.doc(docid).delete();
   }
-
-  
-
   //search
 }

@@ -54,7 +54,7 @@ class _FeaturedPartState extends State<FeaturedPart> {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.all(width * 0.05),
-                    itemCount: 3,
+                    itemCount: productlist.length > 3 ? 3 : productlist.length,
                     itemBuilder: (context, index) {
                       // Get each product
                       DocumentSnapshot document = productlist[index];

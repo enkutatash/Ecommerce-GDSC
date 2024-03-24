@@ -1,4 +1,5 @@
 import 'package:fire/page/admin/newproduct.dart';
+import 'package:fire/page/admin/productedit.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,7 +56,7 @@ class SideBar extends StatelessWidget {
             title: Text('Edit Product'),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddNewProduct(userdata)));
+                  MaterialPageRoute(builder: (context) => ProductEditList(userdata,"s6N7ql9YmxdMRu3oC2WDPWQoxvs2")));
             },
           ),
           ListTile(
