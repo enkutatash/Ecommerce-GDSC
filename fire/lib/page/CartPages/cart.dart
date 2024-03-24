@@ -3,68 +3,74 @@ import 'package:fire/page/product/Item2.dart';
 import 'package:fire/page/user/Search/search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 class Cart extends StatelessWidget {
-  const Cart({Key? key});
+  Map<String, dynamic> userdata;
+  String userid;
+  Cart(this.userdata,this.userid, {Key? key});
 
   @override
   Widget build(BuildContext context) {
     final CartController _cartController = Get.find();
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Search_Screen()),
-            );
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-        title: const Text("Cart"),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(5),
-        child: Column(
-  children: [
-    Expanded( // Wrap the ListView.builder with Expanded to avoid overflow
-      child: Obx(() {
-        if (_cartController.product.isEmpty) {
-          return const Center(
-            child: Text("Empty cart"),
-          );
-        } else {
-          return ListView.builder(
-            itemCount: _cartController.product.length,
-            itemBuilder: (context, index) {
-              final keys = _cartController.product.keys.toList();
-              final values = _cartController.product.values.toList();
-              return CartItem(
-                      _cartController,
-                      _cartController.product.isNotEmpty
-                          ? _cartController.product.keys.toList()[index]
-                          : null, // Handle empty map case
-                      _cartController.product.isNotEmpty
-                          ? _cartController.product.values.toList()[index]
-                          : null, // Handle empty map case
-                      index,
-                    );
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Search_Screen(userdata,userid)),
+              );
             },
-          );
-        }
-      }),
-    ),
-    if (_cartController.product.isNotEmpty) // Check if cart is not empty
-      const SizedBox(height: 20), // Add space between ListView and CartTotal
-    if (_cartController.product.isNotEmpty) // Check if cart is not empty
-      const CartTotal(),
-    if (_cartController.product.isNotEmpty) 
-    const CheckoutButton()
-  ],
-)
-      )
-    );
+            icon: const Icon(Icons.arrow_back),
+          ),
+          title: const Text("Cart"),
+          centerTitle: true,
+        ),
+        body: Padding(
+            padding: EdgeInsets.all(5),
+            child: Column(
+              children: [
+                Expanded(
+                  // Wrap the ListView.builder with Expanded to avoid overflow
+                  child: Obx(() {
+                    if (_cartController.product.isEmpty) {
+                      return const Center(
+                        child: Text("Empty cart"),
+                      );
+                    } else {
+                      return ListView.builder(
+                        itemCount: _cartController.product.length,
+                        itemBuilder: (context, index) {
+                          final keys = _cartController.product.keys.toList();
+                          final values =
+                              _cartController.product.values.toList();
+                          return CartItem(
+                            _cartController,
+                            _cartController.product.isNotEmpty
+                                ? _cartController.product.keys.toList()[index]
+                                : null, // Handle empty map case
+                            _cartController.product.isNotEmpty
+                                ? _cartController.product.values.toList()[index]
+                                : null, // Handle empty map case
+                            index,
+                          );
+                        },
+                      );
+                    }
+                  }),
+                ),
+                if (_cartController
+                    .product.isNotEmpty) // Check if cart is not empty
+                  const SizedBox(
+                      height: 20), // Add space between ListView and CartTotal
+                if (_cartController
+                    .product.isNotEmpty) // Check if cart is not empty
+                  const CartTotal(),
+                if (_cartController.product.isNotEmpty) const CheckoutButton()
+              ],
+            )));
   }
 }
 
@@ -75,21 +81,22 @@ class CheckoutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final CartController _cartController = Get.find();
     final width = MediaQuery.of(context).size.width;
-    return Obx(() => _cartController.product.isNotEmpty? SizedBox(
-      width: width*0.6,
-      child: ElevatedButton(
-          onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0XFF6055D8)),
-                child:const Text(
-                  "Check Out ",
-                  style: TextStyle(color: Colors.white),
-                ), // Add your button text here
-              ),
-    ):Container());
+    return Obx(() => _cartController.product.isNotEmpty
+        ? SizedBox(
+            width: width * 0.6,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0XFF6055D8)),
+              child: const Text(
+                "Check Out ",
+                style: TextStyle(color: Colors.white),
+              ), // Add your button text here
+            ),
+          )
+        : Container());
   }
 }
-
 
 class CartItem extends StatelessWidget {
   final CartController _cartController;
@@ -258,87 +265,88 @@ class CartTotal extends StatelessWidget {
     final CartController _cartController = Get.find();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return Obx(() => _cartController.product.isNotEmpty? Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color: Color(0XFFF8F7F7),
-              borderRadius: BorderRadius.circular(20)),
-          height: height * 0.28,
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text("Order Summary",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Items",
-                          style: TextStyle(
-                              fontSize: 15, color: Color(0XFF484848))),
-                      Text("${_cartController.product.length}",
-                          style: const TextStyle(
-                              fontSize: 15, color: Color(0XFF484848)))
-                    ],
+    return Obx(() => _cartController.product.isNotEmpty
+        ? Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Color(0XFFF8F7F7),
+                borderRadius: BorderRadius.circular(20)),
+            height: height * 0.28,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text("Order Summary",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("SubTotal",
-                          style: TextStyle(
-                              fontSize: 15, color: Color(0XFF484848))),
-                      Text("\$ ${_cartController.subtotal}",
-                          style: const TextStyle(
-                              fontSize: 15, color: Color(0XFF484848)))
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Items",
+                            style: TextStyle(
+                                fontSize: 15, color: Color(0XFF484848))),
+                        Text("${_cartController.product.length}",
+                            style: const TextStyle(
+                                fontSize: 15, color: Color(0XFF484848)))
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Delivery Charge",
-                          style: TextStyle(
-                              fontSize: 15, color: Color(0XFF484848))),
-                      Text("\$ ${_cartController.delivery}",
-                          style: const TextStyle(
-                              fontSize: 15, color: Color(0XFF484848)))
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("SubTotal",
+                            style: TextStyle(
+                                fontSize: 15, color: Color(0XFF484848))),
+                        Text("\$ ${_cartController.subtotal}",
+                            style: const TextStyle(
+                                fontSize: 15, color: Color(0XFF484848)))
+                      ],
+                    ),
                   ),
-                ),
-                const Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Divider(
-                    color: Colors.grey,
-                    height: 1,
-                    thickness: 1,
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Delivery Charge",
+                            style: TextStyle(
+                                fontSize: 15, color: Color(0XFF484848))),
+                        Text("\$ ${_cartController.delivery}",
+                            style: const TextStyle(
+                                fontSize: 15, color: Color(0XFF484848)))
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Total"),
-                      Text("\$ ${_cartController.total}")
-                    ],
+                  const Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Divider(
+                      color: Colors.grey,
+                      height: 1,
+                      thickness: 1,
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Total"),
+                        Text("\$ ${_cartController.total}")
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ):Container()
-        );
+          )
+        : Container());
   }
 }

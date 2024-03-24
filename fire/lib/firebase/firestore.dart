@@ -4,6 +4,7 @@ class Firestore {
   //get collection of notes
   final CollectionReference dbref =
       FirebaseFirestore.instance.collection('product');
+  
 
   //create
   Future addproduct(String name, double price, int amount, String description,
@@ -19,7 +20,7 @@ class Firestore {
     });
   }
 
-
+ 
 
   //update
   Future<void> updateproduct(String docid, String name, String des,
@@ -43,6 +44,8 @@ class Firestore {
   Future<void> deleteproduct(String docid) {
     return dbref.doc(docid).delete();
   }
+
+  
 
   //search
 }

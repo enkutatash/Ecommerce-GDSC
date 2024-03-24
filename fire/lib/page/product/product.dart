@@ -6,7 +6,9 @@ import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {
-  const ProductList({Key? key});
+  Map<String, dynamic> userdata;
+  String userid;
+  ProductList(this.userdata, this.userid,{Key? key});
 
   @override
   State<ProductList> createState() => _ProductListState();
@@ -21,17 +23,22 @@ class _ProductListState extends State<ProductList> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title:const Text("Products"),centerTitle: true,
-        leading:  InkWell(
-                          onTap: () {
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=>General_Screen()));
-                          },
-                          child: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                        ),
+        title: const Text("Products"),
+        centerTitle: true,
+        leading: InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        General_Screen(widget.userid)));
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 30,
+          ),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestore.getproduct(),
@@ -39,11 +46,11 @@ class _ProductListState extends State<ProductList> {
           if (snapshot.hasData) {
             List productlist = snapshot.data!.docs;
             return Padding(
-              padding: EdgeInsets.all(width*0.05),
+              padding: EdgeInsets.all(width * 0.05),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // Number of columns in the grid
-                  crossAxisSpacing: width*0.03, // Spacing between columns
+                  crossAxisSpacing: width * 0.03, // Spacing between columns
                   mainAxisSpacing: 10.0, // Spacing between rows
                 ),
                 itemCount: productlist.length,
@@ -73,13 +80,6 @@ class _ProductListState extends State<ProductList> {
             );
           }
         },
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddNewProduct()));
-
-      },
-      child: Icon(Icons.add_circle_outline_sharp),
       ),
     );
   }

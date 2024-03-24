@@ -5,7 +5,9 @@ import 'package:fire/page/user/Home/Item.dart';
 import 'package:fire/page/product/product.dart';
 
 class MostPopular extends StatefulWidget {
-  const MostPopular({Key? key}) : super(key: key);
+  Map<String, dynamic> userdata;
+  String userid;
+  MostPopular(this.userdata,this.userid, {Key? key}) : super(key: key);
 
   @override
   _MostPopularState createState() => _MostPopularState();
@@ -29,8 +31,10 @@ class _MostPopularState extends State<MostPopular> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProductList()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProductList(widget.userdata,widget.userid)));
               },
               child: Text(
                 "see all",
@@ -40,7 +44,7 @@ class _MostPopularState extends State<MostPopular> {
           ],
         ),
         SizedBox(
-          height: height*0.25,
+          height: height * 0.25,
           child: StreamBuilder<QuerySnapshot>(
             stream: firestore.getproduct(),
             builder: (context, snapshot) {
@@ -67,8 +71,7 @@ class _MostPopularState extends State<MostPopular> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Item(
-                        imageURL, name, price, amount, description, id, size
-                      ),
+                          imageURL, name, price, amount, description, id, size),
                     );
                   },
                 );

@@ -227,8 +227,8 @@ class _AddNewProductState extends State<AddNewProduct> {
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
                             fontSize: 16.0);
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => ProductList()));
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) => (){}));
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFF6055D8)),

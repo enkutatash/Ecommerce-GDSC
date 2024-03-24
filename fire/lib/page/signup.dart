@@ -1,11 +1,14 @@
 // import 'dart:ffi';
+import 'dart:io';
 
-import 'package:fire/page/front.dart';
-import 'package:fire/page/admin/newproduct.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fire/firebase/firebase_service.dart';
 import 'package:fire/page/signin.dart';
+
 class SignUp_Screen extends StatefulWidget {
   SignUp_Screen({super.key});
 
@@ -20,6 +23,9 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
   final email = TextEditingController();
   final username = TextEditingController();
   final password = TextEditingController();
+  String imagePath = "assets/profile_pic.png";
+  File? _image;
+  String? downloadUrl;
 
   bool ischecked = false;
 
@@ -27,6 +33,32 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
   void initState() {
     _auth = Firebase_auth_service(context);
     super.initState();
+  }
+
+  Future<void> pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+    // For mobile platforms, set the image directly
+    final imageTemp = File(image.path);
+    setState(() {
+      imagePath = imageTemp.path;
+      _image = imageTemp;
+    });
+    final Reference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('images')
+        .child('${DateTime.now()}.jpg');
+
+    try {
+      // Upload the image to Firebase Storage
+      await storageReference.putFile(_image!);
+
+      // Retrieve the download URL of the uploaded image
+      downloadUrl = await storageReference.getDownloadURL();
+    } catch (e) {
+      // Handle any errors that occur during the upload process
+      print('Error uploading image: $e');
+    }
   }
 
   @override
@@ -44,10 +76,10 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-                    padding: EdgeInsets.only(
+        child: Padding(
+          padding: EdgeInsets.only(
               top: height * 0.05, left: width * 0.1, right: width * 0.1),
-                    child: Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text("Getting Started",
@@ -57,6 +89,26 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
                 style: TextStyle(
                   color: Colors.black.withOpacity(0.5),
                 ),
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              Center(
+                child: Stack(children: [
+                  CircleAvatar(
+                      radius: 40.0,
+                      backgroundImage: AssetImage(imagePath)),
+                  Positioned(
+                      top: 45,
+                      right: -10,
+                      child: IconButton(
+                          onPressed:pickImage,
+                          icon: const Icon(
+                            Icons.camera_alt_outlined,
+                            size: 30,
+                            color: Color(0XFF6055D8),
+                          )))
+                ]),
               ),
               SizedBox(
                 height: height * 0.03,
@@ -174,9 +226,9 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
                 ],
               ),
             ],
-                    ),
-                  ),
-          )),
+          ),
+        ),
+      )),
     );
   }
 
@@ -194,15 +246,16 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
   }
 
   void _signUp() async {
-    // String UserName = username.text;
+    String UserName = username.text;
     String Email = email.text;
     String Password = password.text;
 
-    User? user = await _auth.signUpWithEmailAndPassword(Email, Password);
+    User? user =
+        await _auth.signUpWithEmailAndPassword(Email, UserName, Password,downloadUrl!);
     if (user != null) {
       print("User is successfully created");
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AddNewProduct()));
+          context, MaterialPageRoute(builder: (context) => General_Screen(user.uid)));
       _showSnackBar("User is successfully created");
     } else {
       print("Some error happend on create user");

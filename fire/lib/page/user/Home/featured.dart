@@ -5,7 +5,9 @@ import 'package:fire/page/user/Home/Item.dart';
 import 'package:fire/page/product/product.dart';
 
 class FeaturedPart extends StatefulWidget {
-  const FeaturedPart({Key? key}) : super(key: key);
+  Map<String, dynamic> userdata;
+  String userid;
+  FeaturedPart(this.userdata, this.userid,{Key? key}) : super(key: key);
 
   @override
   _FeaturedPartState createState() => _FeaturedPartState();
@@ -30,8 +32,10 @@ class _FeaturedPartState extends State<FeaturedPart> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ProductList()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProductList(widget.userdata,widget.userid)));
                 },
                 child: Text(
                   "see all",
@@ -41,7 +45,7 @@ class _FeaturedPartState extends State<FeaturedPart> {
             ],
           ),
           SizedBox(
-            height: height*0.25,
+            height: height * 0.25,
             child: StreamBuilder<QuerySnapshot>(
               stream: firestore.getproduct(),
               builder: (context, snapshot) {
@@ -67,9 +71,8 @@ class _FeaturedPartState extends State<FeaturedPart> {
                       String size = data['Size'];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Item(
-                          imageURL, name, price, amount, description, id, size
-                        ),
+                        child: Item(imageURL, name, price, amount, description,
+                            id, size),
                       );
                     },
                   );

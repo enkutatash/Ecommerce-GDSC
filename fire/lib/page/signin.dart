@@ -2,10 +2,12 @@
 
 import 'package:fire/page/front.dart';
 import 'package:fire/page/admin/newproduct.dart';
+import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fire/firebase/firebase_service.dart';
 import 'package:fire/page/signup.dart';
+
 class SignIn_Screen extends StatefulWidget {
   SignIn_Screen({super.key});
 
@@ -14,7 +16,7 @@ class SignIn_Screen extends StatefulWidget {
 }
 
 class _SignIn_ScreenState extends State<SignIn_Screen> {
- late final Firebase_auth_service _auth;
+  late final Firebase_auth_service _auth;
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final email = TextEditingController();
   final password = TextEditingController();
@@ -41,16 +43,17 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-                    padding: EdgeInsets.only(
+        child: Padding(
+          padding: EdgeInsets.only(
               top: height * 0.05, left: width * 0.1, right: width * 0.1),
-                    child: Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text("Lets's sign you in",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               ),
               Text(
                 "Welcome back",
@@ -65,8 +68,8 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                 "Email",
                 style: TextStyle(color: Colors.black.withOpacity(0.5)),
               ),
-              textfield(
-                  "username", Icons.person_4_outlined, email, TextInputType.text,
+              textfield("username", Icons.person_4_outlined, email,
+                  TextInputType.text,
                   suffixIcon: Icons.done),
               SizedBox(
                 height: height * 0.03,
@@ -131,13 +134,13 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                 ],
               ),
             ],
-                    ),
-                  ),
-          )),
+          ),
+        ),
+      )),
     );
   }
 
-    void _showSnackBar(String message) {
+  void _showSnackBar(String message) {
     final snackBar = SnackBar(
       content: Text(message),
       action: SnackBarAction(
@@ -155,16 +158,16 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
     String Password = password.text;
 
     User? user = await _auth.signInWithEmailAndPassword(Email, Password);
+
     if (user != null) {
       print("User is successfully Sign in");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AddNewProduct()));
+      _auth.data(user.uid);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => General_Screen(user.uid)));
       _showSnackBar("User is successfully Sign in");
-
     } else {
       print("Some error happend on login user");
       _showSnackBar("Some error happend on create user");
-
     }
   }
 }

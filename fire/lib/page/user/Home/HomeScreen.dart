@@ -1,3 +1,4 @@
+import 'package:fire/firebase/firebase_service.dart';
 import 'package:fire/page/user/Home/featured.dart';
 import 'package:fire/page/user/Home/mostPopular.dart';
 import 'package:fire/page/user/Home/updates.dart';
@@ -5,7 +6,9 @@ import 'package:fire/page/user/Search/search.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  Map<String, dynamic> userdata;
+  String userid;
+  HomeScreen(this.userdata,this.userid, {super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,18 +19,19 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return SafeArea(
         child: ListView(
       padding:
           EdgeInsets.fromLTRB(width * 0.04, height * 0.003, width * 0.04, 0),
       children: [
-        const ListTile(
+        ListTile(
           contentPadding: EdgeInsets.all(10),
           leading: CircleAvatar(
-              backgroundImage: AssetImage("assets/profile_img.jpg")),
-          title: Text("Hello!"),
+              backgroundImage: NetworkImage(widget.userdata['profilePic'])),
+          title: const Text("Hello!"),
           subtitle: Text(
-            "John William",
+            widget.userdata['userName'],
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           trailing: CircleAvatar(
@@ -36,8 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SearchBar(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Search_Screen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Search_Screen(widget.userdata,widget.userid)));
           },
           padding: MaterialStateProperty.all<EdgeInsets>(
               const EdgeInsets.symmetric(horizontal: 15)),
@@ -51,8 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
               TextStyle(color: Colors.grey, fontSize: 20)),
         ),
         const Updates(),
-        const FeaturedPart(),
-        const MostPopular(),
+        FeaturedPart(widget.userdata,widget.userid),
+        MostPopular(widget.userdata,widget.userid),
       ],
     ));
   }

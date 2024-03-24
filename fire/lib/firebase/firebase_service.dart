@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Firebase_auth_service {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  final CollectionReference dbrefuser =
+      FirebaseFirestore.instance.collection('User');
   late BuildContext _context;
 
   Firebase_auth_service(BuildContext context) {
@@ -15,18 +18,29 @@ class Firebase_auth_service {
       action: SnackBarAction(
         label: 'Close',
         onPressed: () {
-          // Some action to take when the user presses the action button
         },
       ),
     );
     ScaffoldMessenger.of(_context).showSnackBar(snackBar);
   }
 
+  Future adduser(String userid, String email, String userName, String password,
+       String profilePic) {
+    return dbrefuser.doc(userid).set({
+      'Email': email,
+      'userName': userName,
+      'password': password,
+      'profilePic': profilePic
+    });
+  }
+
   Future<User?> signUpWithEmailAndPassword(
-      String email, String password) async {
+      String email, String userName, String password, String profilePic) async {
     try {
       UserCredential user = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      String? userid = user.user?.uid;
+      adduser(userid!, email, userName, password, profilePic);
       return user.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -57,6 +71,22 @@ class Firebase_auth_service {
     }
     return null;
   }
+
+ Future<Map<String, dynamic>> data(String docid) async {
+  try {
+    DocumentSnapshot snapshot = await dbrefuser.doc(docid).get();
+    if (snapshot.exists) {
+      Map<String, dynamic> userdata = snapshot.data() as Map<String, dynamic>;
+      return userdata;
+    } else {
+      return {}; // Return empty map if the document doesn't exist
+    }
+  } catch (e) {
+    print("Error fetching user data: $e");
+    return {}; // Return empty map if there's an error
+  }
+}
+
 
   void signout() {
     FirebaseAuth.instance.signOut();
