@@ -23,7 +23,7 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
   final email = TextEditingController();
   final username = TextEditingController();
   final password = TextEditingController();
-  String imagePath = "assets/profile_pic.png";
+  String? imagePath;
   File? _image;
   String? downloadUrl;
 
@@ -96,7 +96,10 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
               Center(
                 child: Stack(children: [
                   CircleAvatar(
-                      radius: 40.0, backgroundImage: AssetImage(imagePath)),
+                      radius: 40.0, 
+                       backgroundImage: imagePath != null ? FileImage(File(imagePath!)) : NetworkImage("https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"),
+                      child: imagePath == null ? Icon(Icons.person) : null,
+                      ),
                   Positioned(
                       top: 45,
                       right: -10,

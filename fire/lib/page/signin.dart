@@ -1,5 +1,6 @@
 // import 'dart:ffi';
 
+import 'package:fire/page/admin/adminFront.dart';
 import 'package:fire/page/front.dart';
 import 'package:fire/page/admin/newproduct.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
@@ -170,10 +171,20 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
 
     if (user != null) {
       print("User is successfully Sign in");
-      _fetchUserData(user.uid);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => General_Screen(userdata,user.uid)));
-      _showSnackBar("User is successfully Sign in");
+      print("userid");
+      print(user.uid);
+     await _fetchUserData(user.uid);
+      if (Email == "enkutatasheshetu96@gmail.com") {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AdminFront()));
+        _showSnackBar("Admin is successfully Sign in");
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => General_Screen(userdata, user.uid)));
+        _showSnackBar("User is successfully Sign in");
+      }
     } else {
       print("Some error happend on login user");
       _showSnackBar("Some error happend on create user");

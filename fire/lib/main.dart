@@ -1,5 +1,6 @@
 import 'package:fire/page/admin/adminFront.dart';
 import 'package:fire/page/admin/sidebar.dart';
+import 'package:fire/page/front.dart';
 import 'package:fire/page/signin.dart';
 import 'package:fire/page/signup.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: AdminFront(),
+        body: WelcomePage(),
       ),
     );
   }

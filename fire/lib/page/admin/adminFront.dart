@@ -1,4 +1,5 @@
 import 'package:fire/firebase/firebase_service.dart';
+import 'package:fire/page/admin/general_admin.dart';
 import 'package:fire/page/admin/sidebar.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _AdminFrontState extends State<AdminFront> {
           final userdata = snapshot.data!; // Safe access to userdata
           return Scaffold(
             drawer: SideBar(userdata),
-            body: General_Screen(userdata,"s6N7ql9YmxdMRu3oC2WDPWQoxvs2"),
+            body: General_Screen_Admin(userdata,"s6N7ql9YmxdMRu3oC2WDPWQoxvs2"),
           );
         } else if (snapshot.hasError) {
           // Handle errors during data fetching (optional)
