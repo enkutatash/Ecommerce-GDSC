@@ -1,4 +1,6 @@
 import 'package:fire/page/admin/homescreen.dart';
+import 'package:fire/page/admin/orders.dart';
+import 'package:fire/page/admin/productedit.dart';
 import 'package:flutter/material.dart';
 import 'package:fire/firebase/firebase_service.dart';
 import 'package:fire/page/CartPages/cart.dart';
@@ -32,8 +34,8 @@ class _General_Screen_AdminState extends State<General_Screen_Admin> {
     // Initialize the AllScreens list in initState
     AllScreens = [
       HomeScreen_Admin(widget.userdata, widget.userid),
-      Search_Screen(widget.userdata, widget.userid),
-      Search_Screen(widget.userdata, widget.userid),
+      ProductEditList(widget.userdata, widget.userid),
+      OrderList(widget.userdata, widget.userid),
       ProfilePage(widget.userdata, widget.userid),
     ];
   }

@@ -4,6 +4,8 @@ class Firestore {
   //get collection of notes
   final CollectionReference dbref =
       FirebaseFirestore.instance.collection('product');
+  final CollectionReference orderRef =
+      FirebaseFirestore.instance.collection('Orders');
   
 
   //create
@@ -18,6 +20,21 @@ class Firestore {
       'Id': id,
       'ImageUrl': imageUrl,
     });
+  }
+
+    Future<Map<String, dynamic>> data(String docid) async {
+    try {
+      DocumentSnapshot snapshot = await dbref.doc(docid).get();
+      if (snapshot.exists) {
+        Map<String, dynamic> userdata = snapshot.data() as Map<String, dynamic>;
+        return userdata;
+      } else {
+        return {}; // Return empty map if the document doesn't exist
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+      return {}; // Return empty map if there's an error
+    }
   }
 
  
@@ -40,6 +57,11 @@ class Firestore {
   Stream<QuerySnapshot> getproduct() {
     final productlist = dbref.orderBy('Name').snapshots();
     return productlist;
+  }
+
+   Stream<QuerySnapshot> getorder() {
+    final orderlist = orderRef.snapshots();
+    return orderlist;
   }
 
   //delete

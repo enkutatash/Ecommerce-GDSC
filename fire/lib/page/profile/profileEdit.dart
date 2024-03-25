@@ -20,6 +20,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   late final Firebase_auth_service _auth;
   TextEditingController? userName;
   TextEditingController? password;
+  // TextEditingController? _imagePathController;
   String? downloadUrl;
   String? imagePath;
   File? _image;
@@ -36,12 +37,15 @@ class _ProfileEditState extends State<ProfileEdit> {
     password = TextEditingController(text: widget.userdata['password']);
     userName!.addListener(_onChanged);
     password!.addListener(_onChanged);
+    // _imagePathController =TextEditingController(text:widget.userdata['profilePic']);
+    // _imagePathController!.addListener(_onChanged);
     super.initState();
   }
 
   void _onChanged() {
     widget.userdata['userName'] = userName!.text;
     widget.userdata['password'] = password!.text;
+     widget.userdata['profilePic'] = imagePath;
     print(widget.userdata['userName']);
   }
 
@@ -88,15 +92,15 @@ class _ProfileEditState extends State<ProfileEdit> {
                 CircleAvatar(
                     radius: 40.0, backgroundImage: NetworkImage(imagePath!)),
                 Positioned(
-                    top: 75,
-                    right: -8,
-                    child: IconButton(
-                        onPressed: pickImage,
-                        icon: const Icon(
-                          Icons.camera_alt_outlined,
-                          size: 30,
-                          color: Color(0XFF6055D8),
-                        )))
+                  top: 75,
+                  right: -8,
+                  child: IconButton(
+                      onPressed: pickImage,
+                      icon: const Icon(
+                        Icons.camera_alt_outlined,
+                        size: 30,
+                        color: Color(0XFF6055D8),
+                      )))
               ]),
               Text(
                 "UserName",
@@ -132,8 +136,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                             widget.userdata['userName'],
                             widget.userdata['password'],
                             widget.userdata['profilePic']);
-                        _auth.updatePassword(
-                            widget.userid, oldpassword!, widget.userdata['password']);
+                        _auth.updatePassword(widget.userid, oldpassword!,
+                            widget.userdata['password']);
                         Navigator.push(
                             context,
                             MaterialPageRoute(

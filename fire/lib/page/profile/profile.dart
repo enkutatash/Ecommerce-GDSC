@@ -22,16 +22,7 @@ class ProfilePage extends StatelessWidget {
               CircleAvatar(
                   radius: 60.0,
                   backgroundImage: NetworkImage(userdata['profilePic'])),
-              Positioned(
-                  top: 75,
-                  right: -8,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.camera_alt_outlined,
-                        size: 30,
-                        color: Color(0XFF6055D8),
-                      )))
+              
             ]),
             const SizedBox(height: 20.0),
             Text(

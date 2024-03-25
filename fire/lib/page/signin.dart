@@ -174,7 +174,7 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
       print("userid");
       print(user.uid);
      await _fetchUserData(user.uid);
-      if (Email == "enkutatasheshetu96@gmail.com") {
+      if (Email == "admin@gmail.com") {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const AdminFront()));
         _showSnackBar("Admin is successfully Sign in");

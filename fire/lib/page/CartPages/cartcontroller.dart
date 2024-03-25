@@ -17,12 +17,22 @@ class CartController extends GetxController {
         snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 5));
   }
 
-  void orderCheckOut(String userid) {
-    _product.forEach((product, quantity) {
-      orderRef.add(
-          {'OrderedBy': userid, 'Product': product.id, 'quantity': quantity});
+void orderCheckOut(Map<String, dynamic> userdata) {
+  
+  _product.forEach((product, quantity) {
+    orderRef.add({
+      'OrderedBy': userdata,
+      'Product': {
+        'Name': product.itemName,
+        'Amount': quantity,
+        'Id': product.id,
+        'ImageUrl': product.imageURL,
+        'Price':product.cost
+      },
     });
-  }
+  });
+}
+
 
   get product => _product;
   get productSubTotal => _product.entries

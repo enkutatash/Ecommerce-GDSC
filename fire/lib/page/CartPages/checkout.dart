@@ -302,7 +302,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 } else {
                   final CartController _cartController = Get.find();
 
-                _cartController.orderCheckOut(widget.userid);
+                _cartController.orderCheckOut(widget.userdata);
                 _cartController.clearCart();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => General_Screen(widget.userdata,widget.userid)));
@@ -329,7 +329,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 
                 final CartController _cartController = Get.find();
 
-                _cartController.orderCheckOut(widget.userid);
+                _cartController.orderCheckOut(widget.userdata);
                 _cartController.clearCart();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => General_Screen(widget.userdata,widget.userid)));
