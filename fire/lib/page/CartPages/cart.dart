@@ -1,5 +1,7 @@
 import 'package:fire/page/CartPages/cartcontroller.dart';
+import 'package:fire/page/CartPages/checkout.dart';
 import 'package:fire/page/product/Item2.dart';
+import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:fire/page/user/Search/search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +9,7 @@ import 'package:get/get.dart';
 class Cart extends StatelessWidget {
   Map<String, dynamic> userdata;
   String userid;
-  Cart(this.userdata,this.userid, {Key? key});
+  Cart(this.userdata, this.userid, {Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class Cart extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Search_Screen(userdata,userid)),
+                    builder: (context) => Search_Screen(userdata, userid)),
               );
             },
             icon: const Icon(Icons.arrow_back),
@@ -67,15 +69,18 @@ class Cart extends StatelessWidget {
                       height: 20), // Add space between ListView and CartTotal
                 if (_cartController
                     .product.isNotEmpty) // Check if cart is not empty
-                  const CartTotal(),
-                if (_cartController.product.isNotEmpty) const CheckoutButton()
+                  CartTotal(userid),
+                if (_cartController.product.isNotEmpty)
+                  CheckoutButton(userdata, userid)
               ],
             )));
   }
 }
 
 class CheckoutButton extends StatelessWidget {
-  const CheckoutButton({super.key});
+  String userid;
+  Map<String, dynamic> userdata;
+  CheckoutButton(this.userdata, this.userid, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +90,13 @@ class CheckoutButton extends StatelessWidget {
         ? SizedBox(
             width: width * 0.6,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // _cartController.orderCheckOut(userid);
+                // _cartController.clearCart();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CheckoutPage(userdata,userid)));
+
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF6055D8)),
               child: const Text(
@@ -258,7 +269,8 @@ class CartProduct extends StatelessWidget {
 }
 
 class CartTotal extends StatelessWidget {
-  const CartTotal({Key? key}) : super(key: key);
+  String userUid;
+  CartTotal(this.userUid, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

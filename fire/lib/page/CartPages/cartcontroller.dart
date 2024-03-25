@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire/page/product/Item2.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
+  final CollectionReference orderRef =
+      FirebaseFirestore.instance.collection('Orders');
   var _product = {}.obs;
   //add product to cart
   void addProduct(Item2 product) {
@@ -14,12 +17,19 @@ class CartController extends GetxController {
         snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 5));
   }
 
+  void orderCheckOut(String userid) {
+    _product.forEach((product, quantity) {
+      orderRef.add(
+          {'OrderedBy': userid, 'Product': product.id, 'quantity': quantity});
+    });
+  }
+
   get product => _product;
   get productSubTotal => _product.entries
       .map((product) => product.key.cost * product.value)
       .toList();
 
-     get subtotal => _product.entries
+  get subtotal => _product.entries
       .map((product) => product.key.cost * product.value)
       .toList()
       .reduce((value, element) => value + element)
@@ -34,11 +44,15 @@ class CartController extends GetxController {
     }
   }
 
+  void clearCart() {
+    _product.clear();
+  }
+
   void delete(Item2 product) {
     _product.removeWhere((key, value) => key == product);
   }
 
-  get delivery => product.length*0.01;
+  get delivery => product.length * 0.01;
   get total {
     double subtotal = 0.0;
     product.forEach((item, quantity) {

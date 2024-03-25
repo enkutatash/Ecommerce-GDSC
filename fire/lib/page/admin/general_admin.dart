@@ -33,6 +33,7 @@ class _General_Screen_AdminState extends State<General_Screen_Admin> {
     AllScreens = [
       HomeScreen_Admin(widget.userdata, widget.userid),
       Search_Screen(widget.userdata, widget.userid),
+      Search_Screen(widget.userdata, widget.userid),
       ProfilePage(widget.userdata, widget.userid),
     ];
   }
