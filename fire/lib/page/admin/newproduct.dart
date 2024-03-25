@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:fire/firebase/firestore.dart';
+import 'package:fire/page/admin/general_admin.dart';
 import 'package:fire/page/product/product.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -230,7 +231,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => General_Screen(widget.userdata,"s6N7ql9YmxdMRu3oC2WDPWQoxvs2")));
+                            MaterialPageRoute(builder: (context) => General_Screen_Admin(widget.userdata,"s6N7ql9YmxdMRu3oC2WDPWQoxvs2")));
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFF6055D8)),

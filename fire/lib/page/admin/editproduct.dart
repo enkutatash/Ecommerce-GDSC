@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:fire/firebase/firestore.dart';
+import 'package:fire/page/admin/general_admin.dart';
 import 'package:fire/page/user/Home/General_Screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -266,7 +267,7 @@ class _EditProductState extends State<EditProduct> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => General_Screen(
+                                builder: (context) => General_Screen_Admin(
                                     widget.userdata,
                                     "s6N7ql9YmxdMRu3oC2WDPWQoxvs2")));
                       },
